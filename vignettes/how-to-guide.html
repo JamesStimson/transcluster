@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="James Stimson" />
+
+<meta name="date" content="2018-05-12" />
+
+<title>Getting started with cluster analysis using transcluster</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started with cluster analysis using <em>transcluster</em></h1>
+<h4 class="author"><em>James Stimson</em></h4>
+<h4 class="date"><em>2018-05-12</em></h4>
+
+
+
+<p><em>transcluster</em> implements new methods for the partition of data obtained from whole genome sequencing (WGS) studies into transmission clusters. Inputs include:</p>
+<ul>
+<li>Sample unique IDs</li>
+<li>Sample dates</li>
+<li>Matrix of pairwise SNP differences between the samples</li>
+<li>Resistance conferring SNP data</li>
+</ul>
+<div id="functionality" class="section level2">
+<h2>Functionality</h2>
+<p>The available functions in <em>transcluster</em> are:</p>
+<p><strong>withinCluster</strong>: test whether two cases are within the same transmission cluster</p>
+<p><strong>createModel</strong>: create model to be used for cluster analysis</p>
+<p><strong>makeSNPClusters</strong>: make SNP-based clusters for each threshold set in the model</p>
+<p><strong>makeTransClusters</strong>: make transmission-based clusters for each threshold set in the model</p>
+<p><strong>setDatesFromFile</strong>: set sample dates from a file</p>
+<p><strong>setParams</strong>: set parameters for existing cluster analysis model</p>
+<p><strong>setSNPFromFile</strong>: set SNP distance matrix from a file</p>
+<p><strong>setSNPThresholds</strong>: set SNP thresholds for existing cluster analysis model</p>
+<p><strong>setTransMatrixFromFile</strong>: set transmission distance matrix from a file</p>
+<p><strong>setTransThresholds</strong>: set transmission thresholds for existing cluster analysis model</p>
+</div>
+<div id="a-simple-example" class="section level2">
+<h2>A simple example</h2>
+<p>Start by loading the libraries:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(transcluster)
+<span class="kw">library</span>(stats)
+<span class="kw">library</span>(clue)
+<span class="kw">library</span>(igraph)</code></pre></div>
+<p>Then create some data. This is the same as the first example in the paper.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ids &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>)
+dates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2018</span>, <span class="dv">2014</span>, <span class="dv">2016</span>, <span class="dv">2016</span>)
+snpMatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">0</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">6</span>,<span class="dv">0</span>), <span class="dt">nrow=</span><span class="dv">4</span>, <span class="dt">ncol=</span><span class="dv">4</span>)</code></pre></div>
+<p>Set up the model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myModel &lt;-<span class="st"> </span><span class="kw">createModel</span>(ids, dates, snpMatrix)
+myModel &lt;-<span class="st"> </span><span class="kw">setParams</span>(myModel, <span class="dt">lambda=</span><span class="fl">1.5</span>, <span class="dt">beta=</span><span class="fl">2.3</span>)
+myModel &lt;-<span class="st"> </span><span class="kw">setSNPThresholds</span>(myModel, <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>))
+myModel &lt;-<span class="st"> </span><span class="kw">setTransThresholds</span>(myModel, <span class="kw">c</span>(<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>))</code></pre></div>
+<p>Create the clusters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mySNPClusters &lt;-<span class="st"> </span><span class="kw">makeSNPClusters</span>(myModel, <span class="st">'test'</span>)
+myTransClusters &lt;-<span class="st"> </span><span class="kw">makeTransClusters</span>(myModel, <span class="st">'test'</span>)</code></pre></div>
+<p>Examine the results using igraph:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(transcluster)
+myModel &lt;-<span class="st"> </span><span class="kw">setCutoffs</span>(myModel)
+<span class="kw">plotClusters</span>(myTransClusters[[<span class="st">'7'</span>]], myModel, <span class="dt">vSize=</span><span class="dv">40</span>, <span class="dt">vFontSize=</span><span class="dv">1</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a56052c UNW- 4 1 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edge from a56052c (vertex names):
+#&gt; [1] C--D
+plotClusters(myTransClusters[['8']], myModel, vSize=40, vFontSize=1)</code></pre>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAllBMVEUAAAAAADgAADoAAE4AAGYAAIsAAJ8AALMAOosAOpAAOp8AOscAZosAZrYAZscAZtoAkJ8AkMcAkO0AtrMAtv8A28cA2/8A/9oA/+0A//86AAA6AIs6kNtmAABmAItmtv+QOgCQOjqQtpCQ2/+pqam2ZgC2Zma2///bkDrb/7bb////tmb/25D/28f//7b//9r//9v////8Zx1PAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAFo0lEQVR4nO3dfVfaVgCA8awrUyeuzpdiunZtN1idbq1+/y+3JDcJQdAHTvNyszzPHzs2XAF/5+YmEGXJo71YMvQTiD2BIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBoMGB7pOs11+yrx4+JSd3zw/860tvz6nZwEBfPySh9wD09cPrKQJlJlUfXwZaJZMEuk2SV38Gp5O7ABQkspn1PtyeFGqrakfMvzgL3/rqj3f5d9djumlQoIwkzIuHT2fVLtYEug2TK9tQApV7ZD4i3HZytx7TTYMCZT/v2fpfW0Dh5vtigVqV8yf7b42XT5vmmE4aFOifd82fawsou7meGA2azCb7+jZfth43xnRSzEDlEl4MKTZn40PF0pOvXhtjOinSXSzQVScBH0ug+2QLqDmmkyJdpOu5VR2jqhlUO1RAjTGdFN1hPvzgYdV9+JwbrMJhLKxBZ+tvDUCNMZ0U3YnibVKuPsUinW1ouq3ycRlTvWFjTCfF8lKj3sXqhXh9HlROqfV5UL6hmkGNMZ0U34vVXOjk73BAL7TCzrMqEIopV0yWeg1qjOmiwYFiTyBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggqGWgZDQNBdTu3XWXQJBAkEDQNIEOWH2nCJQkad5+RBMECjwF0T6j977b73hK3d/dIY+cpocITQ4oWcyKfnq7n9D0gNL0/DRNb44LIYG2HjcNQOn17GKvKTRZoIVAux+3AjrfcxGaJFC+SB/teRybJFAxg9zFnnngEujm+Mij2M4HLoHSeb4ICbTjkatd7I1n0jv7Fs6k9/SZIJCv5vd5dN8Pai2BIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggaBxAB30SUftNgagg/46p+1GAHTYZ220XfxAB37WRttFD/TD+g8EBxGKHihJz4+KPzE9EmjnuDQApZez00GERgMU/oxboK1xNdD57EqgHeNqoMvisyQEejrOGUQDN9Ygj2LbA+uj2BsP87tHNs6DkmW7z2Kfh299YMt39+33cCZdrNDLZe9C0QM9Pi7rV/PLZf9C8QPlKMX7Qcuydp8INQ6g4DKI0JiABhEaFdAQQuMCGkAoeqAnJL0LjQ2od6HRAVUb+roUND6gsKW3S0GxA+3ao3Kf3i50xA5UnUNvbFz2eCkobqD1q7DNzcXbH7PZ6c0vnQtFDfTcjpSUb59dz/b7wNrvKWagzR1pWZdU77+mi+4vlkUMVPhchg8OD+8F1UCLcJEsTX+dPNA8fC72E6Dramv3y3S8QEnYh+an6VOhpLwEJFC21lzs2McECiOyH/3m57eLXfvYovxljx5OhOIGuswc5kfbQOWF+myGXU0baH6VnxFebQLlt90cF1vnF1M+k84PVuvfnXp6qlj8zzE6nz+RA50Xy89819mgr+azfgyrT3HSsz3e94P+/W0WXnBlr0r7vyZfFTHQY4870gtPofWB7d7dgL9jXz6B1gcOcnfdJRAkECQQNBjQaBoI6P+XQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkEDQf25l0jrWQvpLAAAAAElFTkSuQmCC" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a563872 UNW- 4 3 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edges from a563872 (vertex names):
+#&gt; [1] A--C A--D C--D
+plotClusters(myTransClusters[['9']], myModel, vSize=40, vFontSize=1)</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a567cce UNW- 4 6 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edges from a567cce (vertex names):
+#&gt; [1] A--B A--C A--D B--C B--D C--D</code></pre>
+<p>And compare these to the clusters obtained with SNP-based clustering:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotClusters</span>(mySNPClusters[[<span class="st">'5'</span>]], myModel, <span class="dt">vColor=</span><span class="st">'orange'</span>, <span class="dt">vSize=</span><span class="dv">40</span>, <span class="dt">vFontSize=</span><span class="dv">1</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a579325 UNW- 4 1 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edge from a579325 (vertex names):
+#&gt; [1] A--B
+plotClusters(mySNPClusters[['6']], myModel, vColor='orange', vSize=40, vFontSize=1)</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a57c3f9 UNW- 4 2 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edges from a57c3f9 (vertex names):
+#&gt; [1] A--B C--D
+plotClusters(mySNPClusters[['7']], myModel, vColor='orange', vSize=40, vFontSize=1)</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<pre><code>#&gt; IGRAPH a58148c UNW- 4 6 -- 
+#&gt; + attr: name (v/c), weight (e/n)
+#&gt; + edges from a58148c (vertex names):
+#&gt; [1] A--B A--C A--D B--C B--D C--D</code></pre>
+<p>The results also appear in <strong>.csv</strong> files saved locally.</p>
+</div>
+<div id="more-examples" class="section level2">
+<h2>More examples</h2>
+<p>Test directly whether two cases are in the same cluster:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">withinCluster</span>(<span class="dt">N =</span> <span class="dv">3</span>, <span class="dt">k_cutoff =</span> <span class="dv">5</span>, <span class="dt">t1 =</span> <span class="fl">2012.13</span>, <span class="dt">t2 =</span> <span class="fl">2015.76</span>, <span class="dt">lambda =</span> <span class="fl">0.7</span>, <span class="dt">beta =</span> <span class="fl">1.3</span>, <span class="dt">perc_cutoff =</span> <span class="fl">0.2</span>)
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<p>More interesting examples to come<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Under construction.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
