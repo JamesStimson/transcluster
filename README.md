@@ -16,9 +16,23 @@ There is a simple starter vignette in the vignettes folder.
 A formal description of the methods is written up in [Beyond the SNP threshold: identifying outbreak clusters using inferred transmissions](https://www.biorxiv.org/content/early/2018/05/10/319707), by 
 James Stimson, Jennifer Leigh Gardy, Barun Mathema, Valeriu Crudu, Theodore Cohen, and Caroline Colijn.
 
+### Installation
+
+You can install **transcluster** in **R** using the following command:
+```{r}
+devtools::install_github("JamesStimson/transcluster", build_vignettes = TRUE)
+```
+
 ### Getting help
 
-If you need assistance using **transcluster**, you can get in touch by emailing 
+To view the vignette once installed, run
+```{r}
+vignette("how-to-guide", package = "transcluster")
+```
+
+Alternatively, you can run the R markdown *vignettes/how-to-guide.Rmd* yourself.
+
+If you need further assistance using **transcluster**, you can get in touch by emailing 
 ```{r}
 james.stimson16@imperial.ac.uk
 ```
