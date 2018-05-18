@@ -2,10 +2,10 @@
 % Please edit documentation in R/Visuals.R
 \name{plotTransClusters}
 \alias{plotTransClusters}
-\title{interactive plot of transmission clusters with weighted edges}
+\title{plot of transmission clusters with weighted edges}
 \usage{
 plotTransClusters(clus, myModel, eWidth = 2, vSize = 5, vFontSize = 1,
-  vColor = "cyan", level = 10, thick = 1)
+  vColor = "cyan", level = 1, thick = 1, labelOffset = 1)
 }
 \arguments{
 \item{clus}{clusters obtained from makeTransClusters()}
@@ -20,16 +20,18 @@ plotTransClusters(clus, myModel, eWidth = 2, vSize = 5, vFontSize = 1,
 
 \item{vColor}{vertex colour}
 
-\item{level}{transmission SNP cut-off level}
+\item{level}{transmission cut-off level}
 
 \item{thick}{edge weight adjustment factor}
+
+\item{labelOffset}{offset height for vertex labels}
 }
 \value{
 graph object
 }
 \description{
-interactive plot of transmission clusters with weighted edges
+plot of transmission clusters with weighted edges
 }
 \examples{
-bcg <- plotTransClusters(fake, bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
+bcg <- plotTransClusters(clus, bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
 }

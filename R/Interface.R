@@ -4,11 +4,6 @@
 # Interface for loading data into Model
 #
 ##################################
-#library(clue)
-#source('Model.R')
-
-# CHECKS needed for non-compliant data
-# Perhaps have file name root as input
 
 #' set sample dates from a file
 #' @param thisModel Model object
@@ -18,11 +13,12 @@
 #' @examples
 #' myModel <- setDatesFromFile(myModel, datefile)
 setDatesFromFile <- function(thisModel, filename){
-  thisData <- read.csv(filename)
+  thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
 
   print(thisData[,1])
-  thisModel$id <- as.vector(thisData[,1])# 09/05/18 added vector conversion.
-  thisModel$date <- 2000+thisData[,2]/365 # TO DO: FIX THIS
+  thisModel$id <- as.vector(thisData[,1])
+  thisModel$date <- as.vector(thisData[,2]) # date data is assumed to be as number, eg 2015.32
+
   # patch up missing dates
   maxdate = 0
   for (d in thisModel$date){
@@ -45,7 +41,7 @@ setDatesFromFile <- function(thisModel, filename){
 #' @examples
 #' myModel <- setSNPFromFile(myModel, snpfile)
 setSNPFromFile <- function(thisModel, filename){
-  thisData <- read.csv(filename)
+  thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
   thisModel$snp <- as.matrix(thisData)
   return (thisModel)
 }
@@ -82,8 +78,6 @@ makeClustersFromSims <- function(thisModel, numSims, dateFileRoot, snpFileRoot, 
     transClusters <- makeTransClusters(thisModel, paste0(subdir, i, '_', thisModel$lambda, '_', thisModel$beta), writeFile)
 
     # compare results using clue
-    # how to compare like with like??? number of clusters?? av number of clusters over all the sims???
-    # OR calculated cut-off equivalent between SNP and trans as per my grpahs (weighted)
     # create a vector of clusters sizes so have baseline for comparison
     knownSizes <- NULL
     for (j in seq(length(knownTransClusters))){
@@ -109,10 +103,6 @@ makeClustersFromSims <- function(thisModel, numSims, dateFileRoot, snpFileRoot, 
         break
       }
     }
-
-    #print(knownSizes)
-    #print(SNPSizes)
-    #print(transSizes)
 
     pKnown <- as.cl_partition(knownTransClusters[[1]])
     pSNP <- as.cl_partition(SNPClusters[[SNP_index]])

@@ -4,12 +4,12 @@
 \alias{makeTransClusters}
 \title{make transmission-based clusters for each threshold set in the model}
 \usage{
-makeTransClusters(thisModel, nameRoot = "transcluster", writeFile = TRUE)
+makeTransClusters(thisModel, nameBase = "transcluster", writeFile = TRUE)
 }
 \arguments{
 \item{thisModel}{cluster analysis model created using createModel()}
 
-\item{nameRoot}{(optional) basis of name to be used for output cluster files}
+\item{nameBase}{(optional) basis of name to be used for output cluster files}
 
 \item{writeFile}{(optional) cluster files will be written if TRUE}
 }

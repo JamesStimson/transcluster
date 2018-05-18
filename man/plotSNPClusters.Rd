@@ -2,10 +2,10 @@
 % Please edit documentation in R/Visuals.R
 \name{plotSNPClusters}
 \alias{plotSNPClusters}
-\title{interactive plot of SNP clusters with weighted edges}
+\title{plot of SNP clusters with weighted edges}
 \usage{
 plotSNPClusters(clus, myModel, eWidth = 2, vSize = 5, vFontSize = 0.2,
-  vColor = "cyan", level = 9, thick = 1)
+  vColor = "cyan", level = 1, thick = 1, labelOffset = 1)
 }
 \arguments{
 \item{clus}{clusters obtained from makeSNPClusters()}
@@ -23,13 +23,15 @@ plotSNPClusters(clus, myModel, eWidth = 2, vSize = 5, vFontSize = 0.2,
 \item{level}{SNP cut-off level}
 
 \item{thick}{edge weight adjustment factor}
+
+\item{labelOffset}{offset height for vertex labels}
 }
 \value{
 graph object
 }
 \description{
-interactive plot of SNP clusters with weighted edges
+plot of SNP clusters with weighted edges
 }
 \examples{
-plotSNPClusters(fake, bcModel, level=4, vColor='orange', vSize=4, thick=1.25)
+plotSNPClusters(clus, bcModel, level=4, vColor='orange', vSize=4, thick=1.25)
 }

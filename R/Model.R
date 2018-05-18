@@ -12,65 +12,7 @@
 
 # Inputs for thresholds can be vectors of integers or just one integer
 
-# 21/03/18 return something in clue-friendly format when writing files
-# TO consider: add clusters to model and return whole model when making clusters? A: return as list if the two things
-#setwd("~/cluster")
-#source('Methods.R')
 
-ProbHeight = function(h, N, lambda, dd, dterm_list){
-  psum <- 0.0
-
-  for (i in seq(0, N))
-  {
-    hterm = lambda^{i+1} * h^i * exp(-lambda*h)/factorial(i)
-    dterm = dterm_list[[i+1]]
-    psum <- psum + hterm*dterm
-  }
-  return(psum)
-}
-
-# Gamma version of ProbHeight() -TO DO: Wire this up-
-ProbHeightGamma = function(h, N, a, b, dd, dterm_list){
-  psum <- 0.0
-
-  for (i in seq(0, N))
-  {
-    hterm = b^{a*(i+1)} * h^{a*(i+1)-1} * exp(-b*h)/gamma(a*(i+1))
-    dterm = dterm_list[[i+1]]
-    psum <- psum + hterm*dterm
-  }
-  return(psum)
-}
-
-ProbTrans = function(t, k, beta){
-  return({beta*t}^k * exp(-beta*t)/factorial(k))
-}
-
-Integrand = function(h, delta_time, N, k, lambda, beta, dterm_list){
-  return(ProbHeight(h, N, lambda, delta_time, dterm_list) * ProbTrans(h+delta_time, k, beta))
-}
-
-ProbKTransmissions = function(N, k, t1, t2, lambda, beta){
-  upper_limit = Inf
-  delta_time = abs(t1-t2)
-  dsum <- 0.0
-  dterm_list = list()
-  for (i in seq(0, N)){
-    dterm = {lambda*delta_time}^{N-i} * exp(-lambda*delta_time)/factorial(N-i)
-    dsum = dsum + dterm
-    dterm_list[[i+1]] = dterm
-  }
-  result = tryCatch(
-    stats::integrate(Integrand, lower=0, upper=upper_limit, delta_time,N,k,lambda,beta,dterm_list),
-    error=function(error_message) {
-      message("Integration error in ProbKTransmissions().")
-      print(paste0(t1,':',t2))
-      message(error_message)
-      return(NA)
-    }
-  )
-  return(result$val/dsum)
-}
 
 #' create levels at which number of transmissions passes the threshold
 #' @param N SNP distance
@@ -211,18 +153,18 @@ convertToClueFormat <- function(ids, clusters){
 
 #' make SNP-based clusters for each threshold set in the model
 #' @param thisModel cluster analysis model created using createModel()
-#' @param nameRoot (optional) basis of name to be used for output cluster files
+#' @param nameBase (optional) basis of name to be used for output cluster files
 #' @param writeFile (optional) cluster files will be written if TRUE
 #' @return list of clusters
 #' @export
 #' @examples
 #' mySNPClusters <- makeSNPClusters(myModel, 'test')
-makeSNPClusters <- function(thisModel, nameRoot='SNPcluster', writeFile=TRUE){
+makeSNPClusters <- function(thisModel, nameBase='SNPcluster', writeFile=TRUE){
   allClusters <- NULL
   for (threshold in thisModel$thSNP){
     clusters <- getClustersNonRecursive(threshold, thisModel$snp, thisModel$id) #TESTING
     if(writeFile){
-      writeClusterFile(clusters, threshold, FALSE, nameRoot)
+      writeClusterFile(clusters, threshold, FALSE, nameBase)
     }
     clueClusters <- convertToClueFormat(thisModel$id, clusters)
     allClusters[[length(allClusters)+1]] <- clueClusters
@@ -231,13 +173,13 @@ makeSNPClusters <- function(thisModel, nameRoot='SNPcluster', writeFile=TRUE){
   return(allClusters)
 }
 
-makeKnownTransClusters <- function(thisModel, nameRoot, writeFile=TRUE){
+makeKnownTransClusters <- function(thisModel, nameBase, writeFile=TRUE){
   allClusters <- NULL
   for (threshold in thisModel$thTrans){
     # Need to cut the trans matrix down to snp matrix size
     clusters = getClustersNonRecursive(threshold, thisModel$trans[1:ncol(thisModel$snp), 1:ncol(thisModel$snp)], thisModel$id) #TESTING
     if(writeFile){
-      writeClusterFile(clusters, threshold, FALSE, nameRoot, TRUE)
+      writeClusterFile(clusters, threshold, FALSE, nameBase, TRUE)
     }
     clueClusters <- convertToClueFormat(thisModel$id, clusters)
     allClusters[[length(allClusters)+1]] <- clueClusters
@@ -248,6 +190,7 @@ makeKnownTransClusters <- function(thisModel, nameRoot, writeFile=TRUE){
 
 #' set levels at which number of transmissions passes the threshold
 #' @param thisModel the model
+#' @export
 #' @return the model
 setCutoffs <- function(thisModel){
   thisModel$tcutoff <- matrix(0, nrow(thisModel$snp), ncol(thisModel$snp))
@@ -264,53 +207,27 @@ setCutoffs <- function(thisModel){
 
 #' make transmission-based clusters for each threshold set in the model
 #' @param thisModel cluster analysis model created using createModel()
-#' @param nameRoot (optional) basis of name to be used for output cluster files
+#' @param nameBase (optional) basis of name to be used for output cluster files
 #' @param writeFile (optional) cluster files will be written if TRUE
 #' @return list of clusters
 #' @keywords cluster
 #' @export
 #' @examples
 #' myTransClusters <- makeTransClusters(myModel, 'test')
-makeTransClusters <- function(thisModel, nameRoot='transcluster', writeFile=TRUE){
+makeTransClusters <- function(thisModel, nameBase='transcluster', writeFile=TRUE){
   allClusters <- NULL
   thisModel <- setCutoffs(thisModel)
   for (threshold in thisModel$thTrans){
     clusters = getClustersNonRecursive(threshold, thisModel$tcutoff, thisModel$id)
     if(writeFile){
-      writeClusterFile(clusters, threshold, TRUE, nameRoot)
+      writeClusterFile(clusters, threshold, TRUE, nameBase)
     }
     clueClusters <- convertToClueFormat(thisModel$id, clusters)
     allClusters[[length(allClusters)+1]] <- clueClusters
   }
   names(allClusters) <- thisModel$thTrans
-  #####################
-  # new code 19/04/2018
-
-  #####################
 
   return(allClusters)
 }
 
-#################################
-#
-# Test code, vignette
-#
-#################################
-
-DOTEST = TRUE
-
-if(DOTEST){
-  ids = c('A', 'B', 'C', 'D')
-  dates = c(2018, 2014, 2016, 2016)
-  snpMatrix = matrix(c(0,5,7,7,5,0,8,8,7,8,0,6,7,8,6,0),nrow=4,ncol=4)
-
-  myModel <- createModel(ids, dates, snpMatrix)
-  myModel <- setParams(myModel, lambda=1.5)
-  myModel <- setParams(myModel, beta=2.3)
-  myModel <- setSNPThresholds(myModel, c(5))
-  myModel <- setTransThresholds(myModel, c(7,8,9))
-
-  mySNPClusters = makeSNPClusters(myModel, 'test2')
-  myTransClusters = makeTransClusters(myModel, 'test2')
-}
 

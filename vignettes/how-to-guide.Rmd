@@ -49,12 +49,15 @@ The available functions in *transcluster* are:
 
 ## A simple example
 
-Start by loading the library:
+Start by loading the libraries:
 ```{r}
 library(transcluster)
+library(stats)
+library(clue)
+library(igraph)
 ```
 
-Then create some data:
+Then create some data. This is the same as the first example in the paper.
 ```{r}
 ids <- c('A', 'B', 'C', 'D')
 dates <- c(2018, 2014, 2016, 2016)
@@ -75,25 +78,61 @@ mySNPClusters <- makeSNPClusters(myModel, 'test')
 myTransClusters <- makeTransClusters(myModel, 'test')
 ```
 
-Examine the results:
+Examine the results using igraph:
+```{r cache=FALSE }
+library(transcluster)
+myModel <- setCutoffs(myModel)
+plotClusters(myTransClusters[['7']], myModel, vSize=40, vFontSize=1)
+plotClusters(myTransClusters[['8']], myModel, vSize=40, vFontSize=1)
+plotClusters(myTransClusters[['9']], myModel, vSize=40, vFontSize=1)
+```
+
+And compare these to the clusters obtained with SNP-based clustering:
 ```{r}
-mySNPClusters[[1]]
-myTransClusters[[1]]
+plotClusters(mySNPClusters[['5']], myModel, vColor='orange', vSize=40, vFontSize=1)
+plotClusters(mySNPClusters[['6']], myModel, vColor='orange', vSize=40, vFontSize=1)
+plotClusters(mySNPClusters[['7']], myModel, vColor='orange', vSize=40, vFontSize=1)
 ```
 
 The results also appear in **.csv** files saved locally.
 
 ## More examples
 
-Test whether two cases are in the same cluster:
+Test directly whether two cases are in the same cluster:
 ```{r}
 withinCluster(N = 3, k_cutoff = 5, t1 = 2012.13, t2 = 2015.76, lambda = 0.7, beta = 1.3, perc_cutoff = 0.2)
 ```
 
-I will add some visualisations using iGraph.
 
-## Notes
+## British Columbia example
 
-More meaningful examples to come^[Under construction.].
+This time we load sample date and SNP distance data from file.
+
+```{r}
+bcModel <- createModel()
+bcModel <- setDatesFromFile(bcModel, "mclust12_dates_R.csv")
+bcModel <- setSNPFromFile(bcModel, "bc_snp_matrix_R.csv")
+```
+
+And we set up the other parameters.
+
+```{r}
+bcModel <- setParams(bcModel, lambda=1.5, beta=2.0)
+bcModel <- setCutoffs(bcModel)   #takes a few seconds
+bcModel <- setSNPThresholds(bcModel, c(4))
+bcModel <- setTransThresholds(bcModel, c(3))
+```
+
+Create and plot.
+
+```{r}
+bcSNPClusters <- makeSNPClusters(bcModel, nameBase='test', writeFile=F)
+bcTClusters <- makeTransClusters(bcModel, nameBase='test', writeFile=F)
+
+plotSNPClusters(bcSNPClusters[[1]], bcModel, level=4, vColor='orange',vSize=4, thick = 1.25)
+plotTransClusters(bcTClusters[[1]], bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
+```
+
+More interesting examples to come^[Under construction.].
 
 
