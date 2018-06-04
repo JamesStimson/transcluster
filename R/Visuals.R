@@ -40,7 +40,6 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
 }
 
 #' plot of SNP clusters with weighted edges
-#' @param clus clusters obtained from makeSNPClusters()
 #' @param myModel cluster analyis model created using createModel()
 #' @param eWidth width of edges
 #' @param vSize size of vertices
@@ -53,13 +52,12 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
 #' @export
 #' @examples
 #' plotSNPClusters(clus, bcModel, level=4, vColor='orange', vSize=4, thick=1.25)
-plotSNPClusters <- function(clus, myModel, eWidth=2, vSize=5, vFontSize=0.2, vColor='cyan', level=1, thick=1, labelOffset=1){
+plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=0.2, vColor='cyan', level=1, thick=1, labelOffset=1){
   edges <- NULL
   wgts <- NULL
   isolates <- myModel$id
-  for (i in seq(length(clus)-1)){
-    group <- clus[[i]]
-    for (j in seq(i+1, length(clus))){
+  for (i in seq(length(myModel$id)-1)){
+    for (j in seq(i+1, length(myModel$id))){
       if (myModel$snp[i,j]<=level){
         edges <- c(edges, myModel$id[[i]], myModel$id[[j]])
         wgts <- c(wgts, 1+thick*(level-myModel$snp[i,j]))
@@ -76,7 +74,6 @@ plotSNPClusters <- function(clus, myModel, eWidth=2, vSize=5, vFontSize=0.2, vCo
 }
 
 #' plot of transmission clusters with weighted edges
-#' @param clus clusters obtained from makeTransClusters()
 #' @param myModel cluster analyis model created using createModel()
 #' @param eWidth width of edges
 #' @param vSize size of vertices
@@ -89,13 +86,12 @@ plotSNPClusters <- function(clus, myModel, eWidth=2, vSize=5, vFontSize=0.2, vCo
 #' @export
 #' @examples
 #' bcg <- plotTransClusters(clus, bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
-plotTransClusters <- function(clus, myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1){
+plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1, showLabels=TRUE){
   edges <- NULL
   wgts <- NULL
   isolates <- myModel$id
-  for (i in seq(length(clus)-1)){
-    group <- clus[[i]]
-    for (j in seq(i+1, length(clus))){
+  for (i in seq(length(myModel$id)-1)){
+    for (j in seq(i+1, length(myModel$id))){
       if (myModel$tcutoff[i,j]<=level){
         edges <- c(edges, myModel$id[[i]], myModel$id[[j]])
         wgts <- c(wgts, 1+ thick*(level-myModel$tcutoff[i,j]))
@@ -107,7 +103,8 @@ plotTransClusters <- function(clus, myModel, eWidth=2, vSize=5, vFontSize=1, vCo
   gtitle <- paste0('Transmission based clusters for T = ',level)
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
   E(cgraph)$weight <- wgts
-  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
+  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
+  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
   return(cgraph)
 }
 

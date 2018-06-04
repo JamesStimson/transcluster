@@ -112,8 +112,10 @@ This time we load sample date and SNP distance data from file.
 
 ```{r}
 bcModel <- createModel()
-bcModel <- setDatesFromFile(bcModel, "mclust12_dates_R.csv")
-bcModel <- setSNPFromFile(bcModel, "bc_snp_matrix_R.csv")
+fileName <- system.file("extdata", "mclust12_dates_R.csv", package = "transcluster", mustWork = TRUE)
+bcModel <- setDatesFromFile(bcModel, fileName)
+fileName <- system.file("extdata", "bc_snp_matrix_R.csv", package = "transcluster", mustWork = TRUE)
+bcModel <- setSNPFromFile(bcModel, fileName)
 ```
 
 And we set up the other parameters.
@@ -131,8 +133,8 @@ Create and plot.
 bcSNPClusters <- makeSNPClusters(bcModel, nameBase='test', writeFile=F)
 bcTClusters <- makeTransClusters(bcModel, nameBase='test', writeFile=F)
 
-plotSNPClusters(bcSNPClusters[[1]], bcModel, level=4, vColor='orange',vSize=4, thick = 1.25)
-plotTransClusters(bcTClusters[[1]], bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
+plotSNPClusters(bcModel, level=4, vColor='orange',vSize=4, thick = 1.25)
+plotTransClusters(bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
 ```
 
 More interesting examples to come^[Under construction.].

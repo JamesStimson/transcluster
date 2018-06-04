@@ -13,8 +13,8 @@
 #' @examples
 #' myModel <- setDatesFromFile(myModel, datefile)
 setDatesFromFile <- function(thisModel, filename){
-  thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
-
+  #thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
+  thisData <- read.csv(filename)
   print(thisData[,1])
   thisModel$id <- as.vector(thisData[,1])
   thisModel$date <- as.vector(thisData[,2]) # date data is assumed to be as number, eg 2015.32
@@ -33,6 +33,7 @@ setDatesFromFile <- function(thisModel, filename){
   return (thisModel)
 }
 
+
 #' set SNP distance matrix from a file
 #' @param thisModel Model object
 #' @param filename Name of the input SNP data file
@@ -41,7 +42,8 @@ setDatesFromFile <- function(thisModel, filename){
 #' @examples
 #' myModel <- setSNPFromFile(myModel, snpfile)
 setSNPFromFile <- function(thisModel, filename){
-  thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
+  #thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
+  thisData <- read.csv(filename)
   thisModel$snp <- as.matrix(thisData)
   return (thisModel)
 }

@@ -4,12 +4,11 @@
 \alias{plotTransClusters}
 \title{plot of transmission clusters with weighted edges}
 \usage{
-plotTransClusters(clus, myModel, eWidth = 2, vSize = 5, vFontSize = 1,
-  vColor = "cyan", level = 1, thick = 1, labelOffset = 1)
+plotTransClusters(myModel, eWidth = 2, vSize = 5, vFontSize = 1,
+  vColor = "cyan", level = 1, thick = 1, labelOffset = 1,
+  showLabels = TRUE)
 }
 \arguments{
-\item{clus}{clusters obtained from makeTransClusters()}
-
 \item{myModel}{cluster analyis model created using createModel()}
 
 \item{eWidth}{width of edges}
