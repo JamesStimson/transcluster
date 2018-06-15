@@ -49,6 +49,14 @@ The available functions in *transcluster* are:
 
 **setTransThresholds**: set transmission thresholds for existing cluster analysis model
 
+**setSNPThresholds**: set SNP thresholds for existing cluster analysis model
+
+Plotting functions:
+
+**plotSNPClusters**: plot of SNP clusters with weighted edges
+
+**plotTransClusters**: plot of transmission clusters with weighted edges
+
 ## A simple example
 
 Start by loading the libraries:
@@ -84,16 +92,16 @@ Examine the results using igraph:
 ```{r cache=FALSE }
 library(transcluster)
 myModel <- setCutoffs(myModel)
-plotClusters(myTransClusters[['7']], myModel, vSize=40, vFontSize=1)
-plotClusters(myTransClusters[['8']], myModel, vSize=40, vFontSize=1)
-plotClusters(myTransClusters[['9']], myModel, vSize=40, vFontSize=1)
+plotTransClusters(myModel, vSize=20, vFontSize=2, level=7, thick=3, labelOffset=0)
+plotTransClusters(myModel, vSize=20, vFontSize=2, level=8, thick=3, labelOffset=0)
+plotTransClusters(myModel, vSize=20, vFontSize=2, level=9, thick=3, labelOffset=0)
 ```
 
 And compare these to the clusters obtained with SNP-based clustering:
 ```{r}
-plotClusters(mySNPClusters[['5']], myModel, vColor='orange', vSize=40, vFontSize=1)
-plotClusters(mySNPClusters[['6']], myModel, vColor='orange', vSize=40, vFontSize=1)
-plotClusters(mySNPClusters[['7']], myModel, vColor='orange', vSize=40, vFontSize=1)
+plotSNPClusters(myModel, vColor='orange', vSize=20, vFontSize=2, level=5, thick=3, labelOffset=0)
+plotSNPClusters(myModel, vColor='orange', vSize=20, vFontSize=2, level=6, thick=3, labelOffset=0)
+plotSNPClusters(myModel, vColor='orange', vSize=20, vFontSize=2, level=7, thick=3, labelOffset=0)
 ```
 
 The results also appear in **.csv** files saved locally.

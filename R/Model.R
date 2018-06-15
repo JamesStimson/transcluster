@@ -23,7 +23,6 @@
 #' @param perc_cutoff cut-off percentage
 #' @param maxN for optimisation, SNP distance greater than this considered not in same cluster
 #' @return number of transmissions reached
-#' @export
 nTransCutoff = function(N, t1, t2, lambda, beta, perc_cutoff, maxN=25, maxK=25){
   if (N > maxN) {return (maxK)}
   total_prob = 0.0

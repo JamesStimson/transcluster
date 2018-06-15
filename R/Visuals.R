@@ -7,6 +7,7 @@
 #
 ##################################
 
+# This is the original plot function, now deprecated
 #' plot of clusters with weighted edges
 #' @param clus clusters obtained from makeSNPClusters()
 #' @param myModel cluster analyis model created using createModel()
@@ -15,9 +16,7 @@
 #' @param vFontSize font size of vertex labels
 #' @param vColor vertex colour
 #' @return graph object
-#' @export
 plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor='cyan'){
-  #cgraph <- graph(clus, directed=F)
   edges <- NULL
   wgts <- NULL
   isolates <- myModel$id
@@ -32,7 +31,6 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
       }
     }
   }
-  #cgraph <- graph(edges=c("A","B"), isolates=myModel$id, directed=F)
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
   E(cgraph)$weight <- wgts
   plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main='Clusters', vertex.label.font=vFontSize)

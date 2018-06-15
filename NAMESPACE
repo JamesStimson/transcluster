@@ -3,8 +3,6 @@
 export(createModel)
 export(makeSNPClusters)
 export(makeTransClusters)
-export(nTransCutoff)
-export(plotClusters)
 export(plotSNPClusters)
 export(plotTransClusters)
 export(setCutoffs)
