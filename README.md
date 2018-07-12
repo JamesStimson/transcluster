@@ -23,6 +23,16 @@ You can install **transcluster** in **R** using the following command:
 devtools::install_github("JamesStimson/transcluster", build_vignettes = TRUE)
 ```
 
+There are some example input files that come with the installation. To find out where they are on your system, use system.file() like this:
+```{r}
+system.file("extdata", "bc_snp_matrix_R.csv", package = "transcluster", mustWork = TRUE)
+```
+
+You will see something like this in response:
+```{r}
+[1] "/Library/Frameworks/R.framework/Versions/3.3/Resources/library/transcluster/extdata/bc_snp_matrix_R.csv"
+```
+
 ### Getting help
 
 To view the vignette once installed, run
