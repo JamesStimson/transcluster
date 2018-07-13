@@ -61,6 +61,25 @@ setTransMatrixFromFile <- function(thisModel, filename){
   return (thisModel)
 }
 
+#' compare similarity of clusters
+#' @param SNPClusters List of clusters
+#' @param transClusters List of clusters
+#' @param roundTo Number of decimal places in return matrix
+#' @export
+compareClusters <- function(SNPClusters, transClusters, roundTo=3){
+  # compare results using clue and return as a matrix
+  compRes <- matrix(0, length(SNPClusters), length(transClusters))
+  for (i in seq(length(SNPClusters))){
+    for (j in seq(length(transClusters))){
+      pSNP <- as.cl_partition(SNPClusters[[i]])
+      pTrans <- as.cl_partition(transClusters[[j]])
+      diss <- cl_dissimilarity(pSNP, pTrans, method="VI")
+      compRes[i, j] <- round(diss, roundTo)
+    }
+  }
+  return(compRes)
+}
+
 makeClustersFromSims <- function(thisModel, numSims, dateFileRoot, snpFileRoot, transFileRoot, subdir, writeFile=FALSE){
 
   sumSNPDiff = 0.0
