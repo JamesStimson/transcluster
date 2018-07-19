@@ -23,11 +23,11 @@
 #' @param perc_cutoff cut-off percentage
 #' @param maxN for optimisation, SNP distance greater than this considered not in same cluster
 #' @return number of transmissions reached
-nTransCutoff = function(N, t1, t2, lambda, beta, perc_cutoff, maxN=25, maxK=25){
+nTransCutoff = function(N, t1, t2, lambda, beta, perc_cutoff, maxN=25, maxK=25, pSpatial=1.0){
   if (N > maxN) {return (maxK)}
   total_prob = 0.0
   for (k in seq(0, maxK)){
-    this_prob = ProbKTransmissions(N, k, t1, t2, lambda, beta)
+    this_prob = pSpatial*ProbKTransmissions(N, k, t1, t2, lambda, beta)
     total_prob = total_prob + this_prob
     if (total_prob > perc_cutoff) {return (k)}
   }

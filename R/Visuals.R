@@ -106,3 +106,37 @@ plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='c
   return(cgraph)
 }
 
+plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1, showLabels=TRUE){
+  edges <- NULL
+  wgts <- NULL
+  vcolours <- NULL
+  isolates <- myModel$id
+  for (i in seq(length(myModel$id)-1)){
+    for (j in seq(i+1, length(myModel$id))){
+      if (myModel$tcutoff[i,j]<=level){
+        edges <- c(edges, myModel$id[[i]], myModel$id[[j]])
+        wgts <- c(wgts, 1+ thick*(level-myModel$tcutoff[i,j]))
+        isolates <- isolates[isolates != myModel$id[[i]]]
+        isolates <- isolates[isolates != myModel$id[[j]]]
+
+      }
+    }
+  }
+
+
+  gtitle <- paste0('Transmission based clusters for T = ',level, ', using region')
+  cgraph <- graph(edges=edges, isolates=isolates, directed=F)
+
+  for (c in seq(length(myModel$region))){
+    thisColour <- regionColour(myModel$subregion[[c]])
+    thisIndex <- which(V(cgraph)$name == myModel$id[[c]])
+    vcolours[[thisIndex]] <- thisColour
+  }
+
+  E(cgraph)$weight <- wgts
+  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vcolours, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
+  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
+  legend("bottomright",title='Region', legend=c('1A','1B','2','3','4','5'),fill=c("orange","lightblue","red","blue","purple","lightgreen"))
+  return(cgraph)
+}
+
