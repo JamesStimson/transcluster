@@ -61,3 +61,4 @@ ProbKTransmissions = function(N, k, t1, t2, lambda, beta){
   return(result$val/dsum)
 }
 
+

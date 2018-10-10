@@ -80,6 +80,61 @@ compareClusters <- function(SNPClusters, transClusters, roundTo=3){
   return(compRes)
 }
 
+#' find clusters in timed tree
+#' @param timedTree timed tree in newick format
+#' @param k_cutoff number of transmissions in cutoff criterion
+#' @param beta transmission rate
+#' @param perc_cutoff cut-off percentage
+#' @param maxK max number of transmissions considered
+#' @export
+#' @examples findTreeCuts(branchtree, 10, 2.2, 0.2)
+clusterTimedTree <- function(timedTree, K_cutoff, beta, perc_cutoff, maxK=25){
+  treeStrLength <- nchar(timedTree)
+
+  cumulLineLength <- 0
+
+  sub_lines = strsplit(timedTree, '):')
+  count <- 0
+  depth <- 0
+
+  depvec <- integer()
+  for (sub_line in sub_lines[[1]]){
+    if(str_count(sub_line[[1]], ';') > 0){
+      print('end of file read')
+      cumulLineLength <- cumulLineLength + nchar(sub_line)
+      break
+    }
+    length <- 0
+    depth <- depth + str_count(sub_line[[1]], '\\(')
+    depth <- depth - 1
+    depvec[length(depvec)+1] <- depth
+
+    if(count>0){
+
+      comma_pos <- regexpr(',', sub_line)[[1]]
+      start_num <- substr(sub_line, 1, comma_pos-1)
+      if (comma_pos == -1){
+        start_num <- sub_line
+      }
+      if (start_num!=""){
+        length <- as.numeric(start_num)
+      }
+      else{
+        length <- 0
+      }
+    }
+
+    transmissions = cutoffLevel(length, maxK, beta, perc_cutoff)
+    if(transmissions >= K_cutoff){
+      print(paste0('Cut branch length ', length, ' at position ', cumulLineLength+1, ' in input file'))
+    }
+    cumulLineLength <- cumulLineLength + nchar(sub_line) + 2
+    count <- count +1
+  }
+  #print(depvec)
+  #print(cumulLineLength - treeStrLength) # should be zero
+}
+
 makeClustersFromSims <- function(thisModel, numSims, dateFileRoot, snpFileRoot, transFileRoot, subdir, writeFile=FALSE){
 
   sumSNPDiff = 0.0

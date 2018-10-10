@@ -118,8 +118,7 @@ plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='c
   return(cgraph)
 }
 
-<<<<<<< HEAD
-=======
+
 plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1, showLabels=TRUE){
   edges <- NULL
   wgts <- NULL
@@ -153,5 +152,5 @@ plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vC
   legend("bottomright",title='Region', legend=c('1A','1B','2','3','4','5'),fill=c("orange","lightblue","red","blue","purple","lightgreen"))
   return(cgraph)
 }
->>>>>>> efd3f4c2fcdfce5a4bd87c64c6167accb1c1adbe
+
 

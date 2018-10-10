@@ -6,10 +6,10 @@ Author: James Stimson
 Maintainer: James Stimson <james.stimson16@imperial.ac.uk>
 Description: Uses SNP distance data together with sample dates to group cases into transmission clusters.
 License: GPL-3
-Imports: stats, clue (>= 0.3-54), igraph
+Imports: stats, clue (>= 0.3-54), igraph, stringr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr

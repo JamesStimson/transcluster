@@ -12,7 +12,20 @@
 
 # Inputs for thresholds can be vectors of integers or just one integer
 
-
+#' create levels at which number of transmissions passes the threshold
+#' @param maxK number of transmissions
+#' @param beta transmission rate
+#' @param perc_cutoff cut-off percentage
+#' @return time length of cutoff
+cutoffLevel = function(t, maxK, beta, perc_cutoff){
+  total_prob = 0.0
+  for (k in seq(0, maxK)){
+    this_prob = ProbTrans(t, k, beta)
+    total_prob = total_prob + this_prob
+    if (total_prob > perc_cutoff) {return (k)}
+  }
+  return (maxK)
+}
 
 #' create levels at which number of transmissions passes the threshold
 #' @param N SNP distance
