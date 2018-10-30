@@ -4,7 +4,8 @@
 \alias{nTransCutoff}
 \title{create levels at which number of transmissions passes the threshold}
 \usage{
-nTransCutoff(N, t1, t2, lambda, beta, perc_cutoff, maxN = 25, maxK = 25)
+nTransCutoff(N, t1, t2, lambda, beta, perc_cutoff, maxN = 25,
+  maxK = 25, pSpatial = 1)
 }
 \arguments{
 \item{N}{SNP distance}

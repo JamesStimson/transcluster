@@ -202,14 +202,14 @@ makeKnownTransClusters <- function(thisModel, nameBase, writeFile=TRUE){
 
 #' set levels at which number of transmissions passes the threshold
 #' @param thisModel the model
+#' @param maxK max number of transmissions looked for
 #' @export
 #' @return the model
-setCutoffs <- function(thisModel){
+setCutoffs <- function(thisModel, maxK=25){
   thisModel$tcutoff <- matrix(0, nrow(thisModel$snp), ncol(thisModel$snp))
   for (i in seq(1, nrow(thisModel$snp)-1)){
     for (j in seq(i+1, ncol(thisModel$snp))){
-      level = nTransCutoff(thisModel$snp[i,j], thisModel$date[i], thisModel$date[j], thisModel$lambda, thisModel$beta, thisModel$perc, 25, 25)
-      #print(paste0(i,':',j,':',level))
+      level = nTransCutoff(thisModel$snp[i,j], thisModel$date[i], thisModel$date[j], thisModel$lambda, thisModel$beta, thisModel$perc, maxK, maxK)
       thisModel$tcutoff[i,j] = level
       thisModel$tcutoff[j,i] = level
     }

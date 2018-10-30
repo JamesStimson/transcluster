@@ -1,3 +1,4 @@
+# Incorporate spatial data into the model
 
 #' set regions from a file
 #' @param thisModel Model object
@@ -12,13 +13,21 @@ setRegionsFromFile <- function(thisModel, filename){
   return (thisModel)
 }
 
+#' return region weights
+#' @param regions region vector
+#' @param subregions subregion vector
+#' @param i index
+#' @param j index
+#' @return weight
 regionWeight <- function(regions, subregions, i, j){
-  # regions <- thisModel$region
   if (subregions[i] == subregions[j]) return (1.0)
   if (regions[i] == regions[j]) return (0.2)
   return (0.1)
 }
 
+#' return colour label
+#' @param regionLabel region label
+#' @return colour label
 regionColour <- function(regionLabel){
   if (regionLabel == "Region 1A") return ("orange")
   if (regionLabel == "Region 1B") return ("lightblue")
@@ -28,18 +37,16 @@ regionColour <- function(regionLabel){
   return ("lightgreen")
 }
 
-#' set levels at which number of transmissions passes the threshold
+#' set levels at which number of transmissions passes the threshold, using spatial data
 #' @param thisModel the model
+#' @param maxK max number of transmissions looked for
 #' @export
 #' @return the model
-setCutoffsSpatial <- function(thisModel){
-  print("new version")
+setCutoffsSpatial <- function(thisModel, maxK=25){
   thisModel$tcutoff <- matrix(0, nrow(thisModel$snp), ncol(thisModel$snp))
   for (i in seq(1, nrow(thisModel$snp)-1)){
     for (j in seq(i+1, ncol(thisModel$snp))){
-      #adjBeta <- thisModel$beta*regionWeight(thisModel$region, thisModel$subregion, i, j)
-      level = nTransCutoff(thisModel$snp[i,j], thisModel$date[i], thisModel$date[j], thisModel$lambda, thisModel$beta, thisModel$perc, 25, 25, regionWeight(thisModel$region, thisModel$subregion, i, j))
-      #print(paste0(i,':',j,':',level))
+      level = nTransCutoff(thisModel$snp[i,j], thisModel$date[i], thisModel$date[j], thisModel$lambda, thisModel$beta, thisModel$perc, maxK, maxK, regionWeight(thisModel$region, thisModel$subregion, i, j))
       thisModel$tcutoff[i,j] = level
       thisModel$tcutoff[j,i] = level
     }

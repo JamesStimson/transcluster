@@ -4,10 +4,12 @@
 \alias{setCutoffs}
 \title{set levels at which number of transmissions passes the threshold}
 \usage{
-setCutoffs(thisModel)
+setCutoffs(thisModel, maxK = 25)
 }
 \arguments{
 \item{thisModel}{the model}
+
+\item{maxK}{max number of transmissions looked for}
 }
 \value{
 the model
