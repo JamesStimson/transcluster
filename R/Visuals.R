@@ -33,7 +33,7 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
   }
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
   E(cgraph)$weight <- wgts
-  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main='Clusters', vertex.label.font=vFontSize)
+  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main='Clusters', vertex.label.cex=vFontSize)
   return(cgraph)
 }
 
@@ -50,7 +50,7 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
 #' @export
 #' @examples
 #' plotSNPClusters(clus, bcModel, level=4, vColor='orange', vSize=4, thick=1.25)
-plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=0.2, vColor='cyan', level=1, thick=1, labelOffset=1){
+plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1){
   edges <- NULL
   wgts <- NULL
   isolates <- myModel$id
@@ -67,7 +67,7 @@ plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=0.2, vColor='c
   gtitle <- paste0('SNP based clusters for S = ',level)
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
   E(cgraph)$weight <- wgts
-  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
+  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
   return(cgraph)
 }
 
@@ -105,8 +105,8 @@ plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='c
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
 
   E(cgraph)$weight <- wgts
-  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
-  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
+  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
+  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
   return(cgraph)
 }
 
@@ -139,8 +139,8 @@ plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vC
   }
 
   E(cgraph)$weight <- wgts
-  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vcolours, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset)
-  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.font=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
+  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vcolours, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
+  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
   legend("bottomright",title='Region', legend=c('1A','1B','2','3','4','5'),fill=c("orange","lightblue","red","blue","purple","lightgreen"))
   return(cgraph)
 }
