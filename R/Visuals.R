@@ -79,7 +79,8 @@ plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cya
 #' @param vColor vertex colour
 #' @param level transmission cut-off level
 #' @param thick edge weight adjustment factor
-#' @param labelOffset offset height for vertex labels
+#' @param labelOffset offset height for vertex label
+#' @param showLabels toggle labels
 #' @return graph object
 #' @export
 #' @examples
@@ -110,7 +111,18 @@ plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='c
   return(cgraph)
 }
 
-
+#' plot of transmission clusters with spatial weightings
+#' @param myModel cluster analyis model created using createModel()
+#' @param eWidth width of edges
+#' @param vSize size of vertices
+#' @param vFontSize font size of vertex labels
+#' @param vColor vertex colour
+#' @param level transmission cut-off level
+#' @param thick edge weight adjustment factor
+#' @param labelOffset offset height for vertex labels
+#' @param showLabels toggle labels
+#' @return graph object
+#' @export
 plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cyan', level=1, thick=1, labelOffset=1, showLabels=TRUE){
   edges <- NULL
   wgts <- NULL
@@ -133,7 +145,7 @@ plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vC
   cgraph <- graph(edges=edges, isolates=isolates, directed=F)
 
   for (c in seq(length(myModel$region))){
-    thisColour <- regionColour(myModel$subregion[[c]])
+    thisColour <- regionColour(myModel, myModel$region[[c]])
     thisIndex <- which(V(cgraph)$name == myModel$id[[c]])
     vcolours[[thisIndex]] <- thisColour
   }

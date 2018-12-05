@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 ## Functionality
 
-The available functions in *transcluster* are:
+Some available functions in *transcluster* are:
 
 **withinCluster**: test whether two cases are within the same transmission cluster
 
@@ -38,6 +38,8 @@ The available functions in *transcluster* are:
 **makeTransClusters**: make transmission-based clusters for each threshold set in the model
 
 **setDatesFromFile**: set sample dates from a file
+
+**setRegionsFromFile**: set region data from a file
 
 **setParams**: set parameters for existing cluster analysis model
 
@@ -56,6 +58,8 @@ Plotting functions:
 **plotSNPClusters**: plot of SNP clusters with weighted edges
 
 **plotTransClusters**: plot of transmission clusters with weighted edges
+
+**plotTransClustersSpatial**: plot of transmission clusters using region data
 
 ## A simple example
 
@@ -145,6 +149,12 @@ plotSNPClusters(bcModel, level=4, vColor='orange',vSize=4, thick = 1.25)
 plotTransClusters(bcModel, level=3, vColor='lightblue',vSize=4, thick = 2, vFontSize=1)
 ```
 
-More interesting examples to come^[Under construction.].
+Add region data to inform the clustering.
 
+```{r}
+regFileName <- system.file("extdata", "example_region_data.csv", package = "transcluster", mustWork = TRUE)
+bcModel <- setRegionsFromFile(bcModel, regFileName)
+bcModel <- setCutoffsSpatial(bcModel)
+plotTransClustersSpatial(bcModel, level=3, vSize=4, thick=2, vFontSize=1)
+```
 
