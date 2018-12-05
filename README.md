@@ -13,7 +13,7 @@ which can be provided directly or from fasta and csv files respectively.
 
 There is a simple starter vignette in the vignettes folder.
 
-A formal description of the methods is written up in [Beyond the SNP threshold: identifying outbreak clusters using inferred transmissions](https://www.biorxiv.org/content/early/2018/05/10/319707), by 
+A formal description of the methods is written up in [Beyond the SNP threshold: identifying outbreak clusters using inferred transmissions](https://www.biorxiv.org/content/early/2018/12/03/319707), by 
 James Stimson, Jennifer Leigh Gardy, Barun Mathema, Valeriu Crudu, Theodore Cohen, and Caroline Colijn.
 
 ### Installation
