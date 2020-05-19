@@ -14,7 +14,7 @@
 #' myModel <- setDatesFromFile(myModel, datefile)
 setDatesFromFile <- function(thisModel, filename){
   #thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
-  thisData <- read.csv(filename)
+  thisData <- utils::read.csv(filename)
   print(thisData[,1])
   thisModel$id <- as.vector(thisData[,1])
   thisModel$date <- as.vector(thisData[,2]) # date data is assumed to be as number, eg 2015.32
@@ -43,7 +43,7 @@ setDatesFromFile <- function(thisModel, filename){
 #' myModel <- setSNPFromFile(myModel, snpfile)
 setSNPFromFile <- function(thisModel, filename){
   #thisData <- read.csv(system.file("extdata", filename, package = "transcluster", mustWork = TRUE))
-  thisData <- read.csv(filename)
+  thisData <- utils::read.csv(filename)
   thisModel$snp <- as.matrix(thisData)
   return (thisModel)
 }
@@ -56,7 +56,7 @@ setSNPFromFile <- function(thisModel, filename){
 #' @examples
 #' myModel <- setTransMatrixFromFile(myModel, transfile)
 setTransMatrixFromFile <- function(thisModel, filename){
-  thisData <- read.csv(filename)
+  thisData <- utils::read.csv(filename)
   thisModel$trans <- as.matrix(thisData[,2:ncol(thisData)])
   return (thisModel)
 }
@@ -71,9 +71,9 @@ compareClusters <- function(SNPClusters, transClusters, roundTo=3){
   compRes <- matrix(0, length(SNPClusters), length(transClusters))
   for (i in seq(length(SNPClusters))){
     for (j in seq(length(transClusters))){
-      pSNP <- as.cl_partition(SNPClusters[[i]])
-      pTrans <- as.cl_partition(transClusters[[j]])
-      diss <- cl_dissimilarity(pSNP, pTrans, method="VI")
+      pSNP <- clue::as.cl_partition(SNPClusters[[i]])
+      pTrans <- clue::as.cl_partition(transClusters[[j]])
+      diss <- clue::cl_dissimilarity(pSNP, pTrans, method="VI")
       compRes[i, j] <- round(diss, roundTo)
     }
   }
@@ -99,7 +99,7 @@ clusterTimedTree <- function(timedTree, K_cutoff, beta, perc_cutoff, maxK=25){
 
   depvec <- integer()
   for (sub_line in sub_lines[[1]]){
-    if(str_count(sub_line[[1]], ';') > 0){
+    if(stringr::str_count(sub_line[[1]], ';') > 0){
       print('end of file read')
       cumulLineLength <- cumulLineLength + nchar(sub_line)
       break
