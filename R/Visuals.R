@@ -31,9 +31,15 @@ plotClusters <- function(clus, myModel, eWidth=2, vSize=30, vFontSize=2, vColor=
       }
     }
   }
-  cgraph <- graph(edges=edges, isolates=isolates, directed=F)
-  E(cgraph)$weight <- wgts
-  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main='Clusters', vertex.label.cex=vFontSize)
+  cgraph <- igraph::graph(edges=edges, isolates=isolates, directed=F)
+  igraph::E(cgraph)$weight <- wgts
+  plot(cgraph,
+       edge.width=igraph::E(cgraph)$weight,
+       vertex.size=vSize,
+       vertex.color=vColor,
+       frame=TRUE,
+       main='Clusters',
+       vertex.label.cex=vFontSize)
   return(cgraph)
 }
 
@@ -65,9 +71,9 @@ plotSNPClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='cya
     }
   }
   gtitle <- paste0('SNP based clusters for S = ',level)
-  cgraph <- graph(edges=edges, isolates=isolates, directed=F)
-  E(cgraph)$weight <- wgts
-  plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
+  cgraph <- igraph::graph(edges=edges, isolates=isolates, directed=F)
+  igraph::E(cgraph)$weight <- wgts
+  plot(cgraph, edge.width=igraph::E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
   return(cgraph)
 }
 
@@ -103,10 +109,10 @@ plotTransClusters <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vColor='c
 
 
   gtitle <- paste0('Transmission based clusters for T = ',level)
-  cgraph <- graph(edges=edges, isolates=isolates, directed=F)
+  cgraph <- igraph::graph(edges=edges, isolates=isolates, directed=F)
 
-  E(cgraph)$weight <- wgts
-  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
+  igraph::E(cgraph)$weight <- wgts
+  if (showLabels) plot(cgraph, edge.width=igraph::E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
   else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
   return(cgraph)
 }
@@ -142,7 +148,7 @@ plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vC
 
 
   gtitle <- paste0('Transmission based clusters for T = ',level, ', using region')
-  cgraph <- graph(edges=edges, isolates=isolates, directed=F)
+  cgraph <- igraph::graph(edges=edges, isolates=isolates, directed=F)
 
   for (c in seq(length(myModel$region))){
     thisColour <- regionColour(myModel, myModel$region[[c]])
@@ -150,10 +156,31 @@ plotTransClustersSpatial <- function(myModel, eWidth=2, vSize=5, vFontSize=1, vC
     vcolours[[thisIndex]] <- thisColour
   }
 
-  E(cgraph)$weight <- wgts
-  if (showLabels) plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vcolours, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset)
-  else plot(cgraph, edge.width=E(cgraph)$weight, vertex.size=vSize, vertex.color=vColor, frame=TRUE, main=gtitle, vertex.label.cex=vFontSize, vertex.label.dist=labelOffset, vertex.label=NA)
-  legend("bottomright",title='Region', legend=c('1A','1B','2','3','4','5'),fill=c("orange","lightblue","red","blue","purple","lightgreen"))
+  igraph::E(cgraph)$weight <- wgts
+  if (showLabels) {
+    plot(cgraph,
+         edge.width=E(cgraph)$weight,
+         vertex.size=vSize,
+         vertex.color=vcolours,
+         frame=TRUE,
+         main=gtitle,
+         vertex.label.cex=vFontSize,
+         vertex.label.dist=labelOffset)
+  } else {
+    plot(cgraph,
+         edge.width=igraph::E(cgraph)$weight,
+         vertex.size=vSize,
+         vertex.color=vColor,
+         frame=TRUE,
+         main=gtitle,
+         vertex.label.cex=vFontSize,
+         vertex.label.dist=labelOffset,
+         vertex.label=NA)
+  }
+  graphics::legend("bottomright",
+         title='Region',
+         legend=c('1A','1B','2','3','4','5'),
+         fill=c("orange","lightblue","red","blue","purple","lightgreen"))
   return(cgraph)
 }
 
