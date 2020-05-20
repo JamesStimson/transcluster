@@ -4,8 +4,7 @@
 \alias{makeTransClusters}
 \title{make transmission-based clusters for each threshold set in the model}
 \usage{
-makeTransClusters(thisModel, nameBase = "transcluster",
-  writeFile = TRUE)
+makeTransClusters(thisModel, nameBase = "transcluster", writeFile = TRUE)
 }
 \arguments{
 \item{thisModel}{cluster analysis model created using createModel()}

@@ -4,8 +4,7 @@
 \alias{makeTransClustersResist}
 \title{make transmission-based clusters for each threshold set in the model using resistance SNPs}
 \usage{
-makeTransClustersResist(thisModel, nameBase = "transcluster",
-  writeFile = TRUE)
+makeTransClustersResist(thisModel, nameBase = "transcluster", writeFile = TRUE)
 }
 \arguments{
 \item{thisModel}{cluster analysis model created using createModel()}

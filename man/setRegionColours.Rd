@@ -4,8 +4,11 @@
 \alias{setRegionColours}
 \title{set region colours}
 \usage{
-setRegionColours(thisModel, colours = c("orange", "lightblue", "red",
-  "blue", "purple", "lightgreen", "yellow", "green", "brown"))
+setRegionColours(
+  thisModel,
+  colours = c("orange", "lightblue", "red", "blue", "purple", "lightgreen", "yellow",
+    "green", "brown")
+)
 }
 \arguments{
 \item{thisModel}{Model object}

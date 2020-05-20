@@ -4,8 +4,14 @@
 \alias{plotClusters}
 \title{plot of clusters with weighted edges}
 \usage{
-plotClusters(clus, myModel, eWidth = 2, vSize = 30, vFontSize = 2,
-  vColor = "cyan")
+plotClusters(
+  clus,
+  myModel,
+  eWidth = 2,
+  vSize = 30,
+  vFontSize = 2,
+  vColor = "cyan"
+)
 }
 \arguments{
 \item{clus}{clusters obtained from makeSNPClusters()}

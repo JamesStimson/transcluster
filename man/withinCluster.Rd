@@ -4,8 +4,18 @@
 \alias{withinCluster}
 \title{test whether two cases are within the same transmission cluster}
 \usage{
-withinCluster(N, k_cutoff, t1, t2, lambda, beta, perc_cutoff, maxN = 25,
-  N_resist = 0, lambda_resist = 0)
+withinCluster(
+  N,
+  k_cutoff,
+  t1,
+  t2,
+  lambda,
+  beta,
+  perc_cutoff,
+  maxN = 25,
+  N_resist = 0,
+  lambda_resist = 0
+)
 }
 \arguments{
 \item{N}{SNP distance}

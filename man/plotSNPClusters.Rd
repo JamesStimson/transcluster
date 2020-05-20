@@ -4,8 +4,16 @@
 \alias{plotSNPClusters}
 \title{plot of SNP clusters with weighted edges}
 \usage{
-plotSNPClusters(myModel, eWidth = 2, vSize = 5, vFontSize = 1,
-  vColor = "cyan", level = 1, thick = 1, labelOffset = 1)
+plotSNPClusters(
+  myModel,
+  eWidth = 2,
+  vSize = 5,
+  vFontSize = 1,
+  vColor = "cyan",
+  level = 1,
+  thick = 1,
+  labelOffset = 1
+)
 }
 \arguments{
 \item{myModel}{cluster analyis model created using createModel()}

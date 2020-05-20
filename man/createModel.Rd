@@ -4,9 +4,16 @@
 \alias{createModel}
 \title{create model to be used for cluster analysis}
 \usage{
-createModel(ids = NULL, dates = NULL, snpMatrix = matrix(, 0, 0),
-  lambda = 1, beta = 1, percCutOff = 0.2, thSNP = seq(1, 10),
-  thTrans = seq(1, 10))
+createModel(
+  ids = NULL,
+  dates = NULL,
+  snpMatrix = matrix(, 0, 0),
+  lambda = 1,
+  beta = 1,
+  percCutOff = 0.2,
+  thSNP = seq(1, 10),
+  thTrans = seq(1, 10)
+)
 }
 \arguments{
 \item{ids}{(optional) vector of unique sample IDs}

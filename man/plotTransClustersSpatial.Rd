@@ -4,9 +4,17 @@
 \alias{plotTransClustersSpatial}
 \title{plot of transmission clusters with spatial weightings}
 \usage{
-plotTransClustersSpatial(myModel, eWidth = 2, vSize = 5,
-  vFontSize = 1, vColor = "cyan", level = 1, thick = 1,
-  labelOffset = 1, showLabels = TRUE)
+plotTransClustersSpatial(
+  myModel,
+  eWidth = 2,
+  vSize = 5,
+  vFontSize = 1,
+  vColor = "cyan",
+  level = 1,
+  thick = 1,
+  labelOffset = 1,
+  showLabels = TRUE
+)
 }
 \arguments{
 \item{myModel}{cluster analyis model created using createModel()}
