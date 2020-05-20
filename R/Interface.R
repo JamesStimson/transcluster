@@ -87,7 +87,7 @@ compareClusters <- function(SNPClusters, transClusters, roundTo=3){
 #' @param perc_cutoff cut-off percentage
 #' @param maxK max number of transmissions considered
 #' @export
-#' @examples findTreeCuts(branchtree, 10, 2.2, 0.2)
+#' @examples \dontrun{clusterTimedTree(branchtree, 10, 2.2, 0.2)}
 clusterTimedTree <- function(timedTree, K_cutoff, beta, perc_cutoff, maxK=25){
   treeStrLength <- nchar(timedTree)
 

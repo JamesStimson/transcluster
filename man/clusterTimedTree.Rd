@@ -21,5 +21,5 @@ clusterTimedTree(timedTree, K_cutoff, beta, perc_cutoff, maxK = 25)
 find clusters in timed tree
 }
 \examples{
-findTreeCuts(branchtree, 10, 2.2, 0.2)
+\dontrun{clusterTimedTree(branchtree, 10, 2.2, 0.2)}
 }
